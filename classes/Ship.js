@@ -13,6 +13,7 @@ export class Ship {
     this.radius = 15;
     this.angle = 0;
     this.strokeColor = "white";
+    this.lives = 3;
 
     this.noseX = canvasWidth / 2 + this.radius;
     this.noseY = canvasHeight / 2;
@@ -60,5 +61,13 @@ export class Ship {
     ctx.arc(this.noseX, this.noseY, 5, 0, 2 * Math.PI);
     ctx.closePath();
     ctx.stroke();
+  }
+
+  Respawn() {
+    this.x = canvasWidth / 2;
+    this.y = canvasWidth / 2;
+    this.velX = 0;
+    this.velY = 0;
+    this.lives -= 1;
   }
 }
