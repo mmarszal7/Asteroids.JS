@@ -50,7 +50,16 @@ function drawScoreboard() {
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
   ctx.fillStyle = "white";
   ctx.font = "21px Arial";
+
+  for (let i = 0; i < ship.lives; i++) {
+    ctx.beginPath();
+    ctx.arc(canvasWidth - 100 + (i * 30), 28, 10, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.stroke();
+  }
+
   ctx.fillText("SCORE: " + score.toString(), 20, 35);
+  ctx.fillText("LIVES:", canvasWidth - 190, 35);
   if (ship.lives <= 0) {
     ship.visible = false;
     ctx.fillText("GAME OVER", canvasWidth / 2 - 60, canvasHeight / 2);
