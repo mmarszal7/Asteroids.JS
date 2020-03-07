@@ -14,12 +14,11 @@ document.addEventListener("DOMContentLoaded", SetupCanvas);
 function SetupCanvas() {
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = 'white';
   document.body.addEventListener("keydown", e => (keys[e.keyCode] = true));
   document.body.addEventListener("keyup", e => {
     keys[e.keyCode] = false;
-    if (e.keyCode === 32) {
+    if (e.keyCode === 32 && ship.visible) {
       bullets.push(new Bullet(ship.angle, ship.noseX, ship.noseY));
     }
   });
@@ -42,7 +41,6 @@ function Render() {
   checkAllCollisions();
 
   if (ship.visible) ship.Update();
-
   bullets.forEach(b => b.Update());
   asteroids.forEach(a => a.Update());
   requestAnimationFrame(Render);
@@ -55,8 +53,6 @@ function drawScoreboard() {
   ctx.fillText("SCORE: " + score.toString(), 20, 35);
   if (ship.lives <= 0) {
     ship.visible = false;
-    ctx.fillStyle = "white";
-    ctx.font = "50px Arial";
     ctx.fillText("GAME OVER", canvasWidth / 2 - 150, canvasHeight / 2);
   }
 }
@@ -71,8 +67,10 @@ function checkAllCollisions() {
   asteroids.forEach((a, i) => {
     bullets.forEach((b, j) => {
       if (checkCollisions(a.x, a.y, a.collisionRadius, b.x, b.y, 3)) {
-        asteroids.push(new Asteroid(a.x - 5, a.y - 5, 30 / a.level, a.level + 1, 30 / a.level));
-        asteroids.push(new Asteroid(a.x + 5, a.y + 5, 30 / a.level, a.level + 1, 30 / a.level));
+        if (a.level < 3) {
+          asteroids.push(new Asteroid(a.x - 5, a.y - 5, 30 / a.level, a.level + 1, 30 / a.level));
+          asteroids.push(new Asteroid(a.x + 5, a.y + 5, 30 / a.level, a.level + 1, 30 / a.level));
+        }
         asteroids.splice(i, 1);
         bullets.splice(j, 1);
         score += 20;

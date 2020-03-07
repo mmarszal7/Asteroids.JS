@@ -12,7 +12,6 @@ export class Ship {
     this.rotateSpeed = 0.001;
     this.radius = 15;
     this.angle = 0;
-    this.strokeColor = "white";
     this.lives = 3;
 
     this.noseX = canvasWidth / 2 + this.radius;
@@ -43,7 +42,6 @@ export class Ship {
   }
 
   Draw() {
-    ctx.strokeStyle = this.strokeColor;
     ctx.beginPath();
     let numberOfAngles = 3;
     let vertAngle = (Math.PI * 2) / numberOfAngles;
