@@ -1,10 +1,11 @@
 import { canvas, canvasWidth, canvasHeight, ctx } from "./Constants.js";
 
+const speed = 3;
+
 export class Asteroid {
   constructor(x, y, radius, level, collisionRadius) {
     this.x = x || Math.floor(Math.random() * canvasWidth);
     this.y = y || Math.floor(Math.random() * canvasHeight);
-    this.speed = 3;
     this.radius = radius || 50;
     this.angle = Math.floor(Math.random() * 359);
     this.collisionRadius = collisionRadius || 45;
@@ -13,8 +14,8 @@ export class Asteroid {
 
   Update() {
     var radians = (this.angle / Math.PI) * 180;
-    this.x += Math.cos(radians) * this.speed;
-    this.y += Math.sin(radians) * this.speed;
+    this.x += Math.cos(radians) * speed;
+    this.y += Math.sin(radians) * speed;
 
     if (this.x < this.radius) this.x = canvas.width;
     if (this.x > canvas.width) this.x = this.radius;
