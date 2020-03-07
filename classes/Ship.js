@@ -1,4 +1,4 @@
-import { canvas, canvasWidth, canvasHeight, ctx } from "./Constants.js";
+import { canvasWidth, canvasHeight, ctx, drawPolygon, inRadians, moveIfOutsideOfGameArea } from "./Constants.js";
 
 const radius = 15;
 const speed = 0.1;
@@ -24,16 +24,12 @@ export class Ship {
   }
 
   Update() {
-    let radians = (this.angle / Math.PI) * 180;
     if (this.movingForward) {
-      this.velX += Math.cos(radians) * speed;
-      this.velY += Math.sin(radians) * speed;
+      this.velX += Math.cos(inRadians(this.angle)) * speed;
+      this.velY += Math.sin(inRadians(this.angle)) * speed;
     }
 
-    if (this.x < radius) this.x = canvas.width;
-    if (this.x > canvas.width) this.x = radius;
-    if (this.y < radius) this.y = canvas.width;
-    if (this.y > canvas.width) this.y = radius;
+    [this.x, this.y] = moveIfOutsideOfGameArea(this.x, this.y, radius);
 
     this.velX *= 0.99; // slow down
     this.velY *= 0.99; // slow down
@@ -43,19 +39,10 @@ export class Ship {
   }
 
   Draw() {
-    ctx.beginPath();
-    let numberOfAngles = 3;
-    let vertAngle = (Math.PI * 2) / numberOfAngles;
-    let radians = (this.angle / Math.PI) * 180;
-    for (let i = 0; i < numberOfAngles; i++) {
-      // middle - ship size projected on the X/Y axis (projection angle = angle of the ship + angle of each polygon's side)
-      ctx.lineTo(this.x - radius * Math.cos(vertAngle * i + radians), this.y - radius * Math.sin(vertAngle * i + radians));
-    }
-    ctx.closePath();
-    ctx.stroke();
+    drawPolygon(this.x, this.y, this.angle, radius, 3)
 
-    this.noseX = this.x - radius * Math.cos(radians);
-    this.noseY = this.y - radius * Math.sin(radians);
+    this.noseX = this.x - radius * Math.cos(inRadians(this.angle));
+    this.noseY = this.y - radius * Math.sin(inRadians(this.angle));
     ctx.beginPath();
     ctx.arc(this.noseX, this.noseY, 5, 0, 2 * Math.PI);
     ctx.closePath();

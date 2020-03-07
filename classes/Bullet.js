@@ -1,4 +1,4 @@
-import { ctx } from "./Constants.js";
+import { ctx, inRadians } from "./Constants.js";
 
 const height = 4;
 const width = 4;
@@ -12,9 +12,8 @@ export class Bullet {
   }
 
   Update() {
-    var radians = (this.angle / Math.PI) * 180;
-    this.x -= Math.cos(radians) * speed;
-    this.y -= Math.sin(radians) * speed;
+    this.x -= Math.cos(inRadians(this.angle)) * speed;
+    this.y -= Math.sin(inRadians(this.angle)) * speed;
     this.Draw();
   }
 

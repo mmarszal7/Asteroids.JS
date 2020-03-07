@@ -53,7 +53,7 @@ function drawScoreboard() {
   ctx.fillText("SCORE: " + score.toString(), 20, 35);
   if (ship.lives <= 0) {
     ship.visible = false;
-    ctx.fillText("GAME OVER", canvasWidth / 2 - 150, canvasHeight / 2);
+    ctx.fillText("GAME OVER", canvasWidth / 2 - 60, canvasHeight / 2);
   }
 }
 

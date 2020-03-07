@@ -1,4 +1,4 @@
-import { canvas, canvasWidth, canvasHeight, ctx } from "./Constants.js";
+import { canvasWidth, canvasHeight, drawPolygon, inRadians, moveIfOutsideOfGameArea } from "./Constants.js";
 
 const speed = 3;
 
@@ -13,26 +13,14 @@ export class Asteroid {
   }
 
   Update() {
-    var radians = (this.angle / Math.PI) * 180;
-    this.x += Math.cos(radians) * speed;
-    this.y += Math.sin(radians) * speed;
+    this.x += Math.cos(inRadians(this.angle)) * speed;
+    this.y += Math.sin(inRadians(this.angle)) * speed;
 
-    if (this.x < this.radius) this.x = canvas.width;
-    if (this.x > canvas.width) this.x = this.radius;
-    if (this.y < this.radius) this.y = canvas.width;
-    if (this.y > canvas.width) this.y = this.radius;
+    [this.x, this.y] = moveIfOutsideOfGameArea(this.x, this.y, this.radius);
     this.Draw();
   }
 
   Draw() {
-    ctx.beginPath();
-    let numberOfAngles = 6;
-    let vertAngle = (Math.PI * 2) / numberOfAngles;
-    let radians = (this.angle / Math.PI) * 180;
-    for (let i = 0; i < numberOfAngles; i++) {
-      ctx.lineTo(this.x - this.radius * Math.cos(vertAngle * i + radians), this.y - this.radius * Math.sin(vertAngle * i + radians));
-    }
-    ctx.closePath();
-    ctx.stroke();
+    drawPolygon(this.x, this.y, this.angle, this.radius, 6)
   }
 }
